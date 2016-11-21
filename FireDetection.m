@@ -10,9 +10,11 @@ function [fireDetected, fireOnlyIm, methodResults] = FireDetection(rgbIm)
     method3Result = method3(im);
     method4Result = method4(im);
     method5Result = method5(im);
-    method6Result = method6(im);   
+    method6Result = method6(im);
+    method8Result = method8(im);
     
-    methodResults = {method3Result, method4Result, method5Result, method6Result};
+    methodResults = {method3Result, method4Result, method5Result, ...
+        method6Result, method8Result};
     
     [row, col, ~] = size(rgbIm);
     fireDetected = ones(row, col, 'logical');

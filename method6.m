@@ -5,7 +5,7 @@ function [output] = method6(im)
     tauValue = 40;
     diff = abs(im(:,:,2) - im(:,:,3));
     output = diff >= tauValue;
-    output = ones(size(output));
+    %output = ones(size(output));
     disp('FIX METHOD 6');
 
 end
