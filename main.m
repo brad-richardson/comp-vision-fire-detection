@@ -33,3 +33,4 @@ imshow(fireDetected);
 subplot(3,3,8);
 imshow(fireOnlyIm);
 
+%YCbCrFigure(im);

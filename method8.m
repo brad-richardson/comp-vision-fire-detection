@@ -3,8 +3,8 @@ function [output] = method8(im)
 %   Take YCbCr image, binarize based on polynomials used to estimate
 %   red-diff chroma component for fire and comparing to the Cb channel
 
-    cb = im(:,:,2);
-    crVals = im(:,:,3);
+    cb = double(im(:,:,2));
+    crVals = double(im(:,:,3));
     cr = {crVals, crVals.^2, crVals.^3, crVals.^4, crVals.^5, crVals.^6, crVals.^7};
     
     % Individual functions of Cr
@@ -18,7 +18,19 @@ function [output] = method8(im)
     fdCr = (1.81*power(10,-4)).*cr{4} + (-1.02*power(10,-1)).*cr{3} + ...
         (2.17*10).*cr{2} + (-2.05*power(10,3)).*cr{1} + (7.29*power(10,4));
     
-    output = cb >= fuCr & cb <= fdCr & cb <= flCr;
+    fuCrPart = cb >= fuCr;
+    fdCrPart = cb <= fdCr;
+    flCrPart = cb <= flCr;
+    figure;
+    imshow(fuCrPart);
+    
+    figure;
+    imshow(fdCrPart);
+    
+    figure;
+    imshow(flCrPart);
+    
+    output = fuCrPart & fdCrPart & flCrPart;
 
 end
 
