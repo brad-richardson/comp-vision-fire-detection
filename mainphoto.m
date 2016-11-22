@@ -1,5 +1,6 @@
 % Brad Richardson
 % Final Project
+% Fire detection in image
 
 close all;
 clear variables;

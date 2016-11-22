@@ -7,6 +7,7 @@ function [fireDetected, fireOnlyIm, methodResults] = FireDetection(rgbIm)
 
     im = rgb2ycbcr(rgbIm);
     
+    addpath('./methods');
     method3Result = method3(im);
     method4Result = method4(im);
     method5Result = method5(im);
