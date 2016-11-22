@@ -5,7 +5,7 @@
 close all;
 clear variables;
 
-im = imread('./data/fig9a.jpg');
+im = imread('./image/fig9a.jpg');
 
 [fireDetected, fireOnlyIm, methodResults] = FireDetection(im);
 
