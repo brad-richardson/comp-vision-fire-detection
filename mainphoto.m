@@ -18,6 +18,7 @@ end
 
 % Display only default tau value results
 [fireDetected, fireOnlyIm, methodResults] = FireDetection(im);
+fireColoredIm = MatchColorChange(im, fireDetected, 0, 0, 255);
 
 figure;
 subplot(3,3,1);
