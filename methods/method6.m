@@ -5,9 +5,6 @@ function [output] = method6(im, tau)
 %   1(most true positive) - 100 (least false positive)
 %   tau of 40 is the default which gives 90% true/40% false and is recommended from paper
 
-    if nargin == 1
-        tau = 40;
-    end
     diff = abs(double(im(:,:,2)) - double(im(:,:,3)));
     output = diff >= tau;
 

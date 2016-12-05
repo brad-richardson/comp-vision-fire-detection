@@ -7,6 +7,16 @@ clear variables;
 
 im = imread('./image/fig9a.jpg');
 
+tauValues = [1, 40, 60, 80, 90, 95, 100];
+for i = 1:size(tauValues, 2)
+    tau = tauValues(i);
+    [fireDetected, fireOnlyIm, ~] = FireDetection(im, tau);
+    fireColoredIm = MatchColorChange(im, fireDetected, 0, 0, 255);
+    imwrite(fireOnlyIm, sprintf('./out/fire-only-%dtau.png', tau));
+    imwrite(fireColoredIm, sprintf('./out/fire-colored-%dtau.png', tau));
+end
+
+% Display only default tau value results
 [fireDetected, fireOnlyIm, methodResults] = FireDetection(im);
 
 figure;
@@ -33,5 +43,8 @@ imshow(fireDetected);
 
 subplot(3,3,8);
 imshow(fireOnlyIm);
+
+subplot(3,3,9);
+imshow(fireColoredIm);
 
 %YCbCrFigure(im);

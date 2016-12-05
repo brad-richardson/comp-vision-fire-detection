@@ -19,3 +19,5 @@ slprj/
 octave-workspace
 
 *.mp4
+
+out/

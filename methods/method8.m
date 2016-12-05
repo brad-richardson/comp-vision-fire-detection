@@ -33,8 +33,6 @@ function [output] = method8(im)
 %     imshow(flCrPart2, []);
     
     output = fuCrPart & fdCrPart & flCrPart;
-    disp('Fix method 8!');
-    output = ones(size(output), 'like', output);
 
 end
 
