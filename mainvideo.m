@@ -5,8 +5,11 @@
 close all;
 clear variables;
 
+MIN_TAU = double(50);
+MAX_TAU = double(90);
+
 smallVideos = [string('forestfire-sm.mp4'), string('firetruck-sm.mp4'), string('helmetfire-sm.mp4')];
-largeVideos = [string('forestfire.mp4'), string('firetruck.mp4'), string('helmetfire.mp4')];
+% largeVideos = [string('forestfire.mp4'), string('firetruck.mp4'), string('helmetfire.mp4')];
 
 videos = smallVideos;
 
@@ -17,7 +20,7 @@ for i = 1:size(videos, 2)
     file = videos(i);
     in = VideoReader(sprintf('./video/%s', file));
     frameCount = round(in.Duration*in.FrameRate);
-    fprintf('Frames to read: %d\n', frameCount);
+    fprintf('Processing %s (frames: %d)\n', file, frameCount);
     outFireOnly = VideoWriter(sprintf('./out/fire-only-%s', file), 'MPEG-4');
     outColored = VideoWriter(sprintf('./out/colored-%s', file), 'MPEG-4');
     open(outFireOnly);
@@ -33,9 +36,12 @@ for i = 1:size(videos, 2)
     while hasFrame(in)
         frame = readFrame(in);
 
+        % Scale tau based on previous fire frames (0-100 --> MAX_TAU-MIN_TAU)
+        delta = (previousFramesFires*(MAX_TAU-MIN_TAU))/double(100);
+        tau = MAX_TAU - delta;
+
         % Process and output results
-        tauValue = 40; % TODO - use previous frames' fires to calculate between 50-96
-        [fireDetected, fireOnlyIm, ~] = FireDetection(frame, tauValue);
+        [fireDetected, fireOnlyIm, ~] = FireDetection(frame, tau);
         previousFrames(previousFramesIdx) = nnz(fireDetected) > 0;
         writeVideo(outFireOnly, fireOnlyIm);
         changedIm = MatchColorChange(frame, fireDetected, 0, 0, 255);
@@ -43,10 +49,10 @@ for i = 1:size(videos, 2)
 
         % Recalculate previous flames with fire for tau value,
         % output every 100 frames to see progress and keep track of fire frames
-        previousFrameFires = nnz(previousFrames);
+        previousFramesFires = nnz(previousFrames);
         if mod(frameIdx,100) == 0
-            overallFireFrames = overallFireFrames + previousFrameFires;
-            fprintf('%d frames read (%d%% with fire)\n', frameIdx, previousFrameFires);
+            overallFireFrames = overallFireFrames + previousFramesFires;
+            fprintf('%d frames read (%d%% with fire)\n', frameIdx, previousFramesFires);
         end
 
         % Increment counters
@@ -63,4 +69,5 @@ for i = 1:size(videos, 2)
     fprintf('Total frames with fire: %d/%d (%.2f%%)\n', overallFireFrames,...
         frameCount, 100.0*double(overallFireFrames)/double(frameCount));
     toc;
+    disp('==================');
 end
